@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chatterbox — real-time chat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Nickname gate -->
+  <div id="gate" class="gate">
+    <button type="button" class="theme-toggle gate-theme-toggle" id="theme-toggle-gate" aria-label="Toggle dark or light theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <div class="gate-card">
+      <div class="gate-dial">
+        <span class="dial-dot"></span>
+        <span class="dial-label">CHATTERBOX</span>
+      </div>
+      <p class="gate-sub">Pick a call sign to get on the line.</p>
+      <form id="nickname-form" autocomplete="off">
+        <input id="nickname-input" type="text" maxlength="24" placeholder="e.g. gayatri_v" required>
+        <button type="submit">Join the line</button>
+      </form>
+      <p id="nickname-error" class="gate-error"></p>
+    </div>
+  </div>
+
+  <!-- Main app -->
+  <div id="app" class="app hidden">
+
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <span class="dial-dot small"></span>
+        <span class="dial-label">CHATTERBOX</span>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">
+          <span>Channels</span>
+        </div>
+        <ul id="room-list" class="channel-list"></ul>
+        <form id="new-room-form" class="new-room-form" autocomplete="off">
+          <input id="new-room-input" type="text" maxlength="32" placeholder="new channel name">
+          <button type="submit">+</button>
+        </form>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">
+          <span>On the line</span>
+          <span id="online-count" class="online-count">0</span>
+        </div>
+        <ul id="user-list" class="user-list"></ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-user">
+          <span class="dial-dot small live"></span>
+          <span id="my-nickname" class="my-nickname"></span>
+        </div>
+        <button type="button" class="theme-toggle" id="theme-toggle-app" aria-label="Toggle dark or light theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+      </div>
+    </aside>
+
+    <main class="chat">
+      <header class="chat-header">
+        <span class="chat-header-code" id="channel-code">CH // —</span>
+        <h1 id="channel-title">general</h1>
+      </header>
+
+      <div id="message-list" class="message-list"></div>
+
+      <form id="message-form" class="message-form" autocomplete="off">
+        <input id="message-input" type="text" placeholder="Type a message…" maxlength="1000">
+        <button type="submit">Send</button>
+      </form>
+    </main>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
