@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: chatterbox
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    # One worker only: online users are kept in memory, so all clients must hit the same process.
+    startCommand: gunicorn -w 1 --threads 100 app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: SECRET_KEY
+        generateValue: true

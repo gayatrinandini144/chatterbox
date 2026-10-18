@@ -5,13 +5,15 @@ No accounts — users join with a nickname. Supports group chat rooms
 and 1-to-1 direct messages, plus a live online-users list.
 """
 
+import os
+
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, join_room, leave_room, emit
 
 import database as db
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "dev-secret-change-me"
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-change-me")
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
 db.init_db()
@@ -135,4 +137,5 @@ def handle_send_message(data):
 
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=5000, debug=True, allow_unsafe_werkzeug=True)
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host="0.0.0.0", port=port, debug=True, allow_unsafe_werkzeug=True)
